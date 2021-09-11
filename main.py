@@ -1,42 +1,25 @@
 import cv2
 from random import randrange
 
-#ai
-trained_face_detection=cv2.CascadeClassifier('/Users/palaniappanarunachalam/PycharmProjects/webcam detection/venv/haarcascade_frontalface_default.xml')
-#to capture video from webcam
-webcam=cv2.VideoCapture(0)
-key=cv2.waitKey(1)
+# load some pre trained data on face frontals
+trained_face_data=cv2.CascadeClassifier(r'/Users/palaniappanarunachalam/PycharmProjects/face detection/venv/haarcascade_frontalface_default.xml')
 
-#iterate forever over the frames
-while True:
-    # read the current frame
-    successful_frame_read, frame=webcam.read()
+#choose an image
+img =cv2.imread(r'/Users/palaniappanarunachalam/PycharmProjects/face detection/venv/_UMA4251.JPG')
+#convert to grayscale
+gs_img=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    #convert to grayscale
-    gs_img=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    # detect Faces
-    face_coordinates = trained_face_detection.detectMultiScale(gs_img)
-
-    # draw rectangle
-    for (x, y, w, h) in face_coordinates:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (randrange(256), randrange(256), randrange(256)), 2)
-
-    cv2.imshow("output",frame)
-    key=cv2.waitKey(1)
-
-    #####stop if q is pressed
-    if key==81 or key==113:
-        break
-
-
-###release video capture
-webcam.release()
+# detect Faces
+face_coordinates = trained_face_data.detectMultiScale(gs_img)
+#print(face_coordinates)
+#draw rectangle
+for (x,y,w,h) in face_coordinates:
+   cv2.rectangle(img,(x,y),(x+w,y+h),(randrange(256),randrange(256),randrange(256)),2)
 
 
 
+
+#show
+cv2.imshow('clever programmer Face', img)
+cv2.waitKey()
 print("code completed")
-
-
-
-
